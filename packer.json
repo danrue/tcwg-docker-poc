@@ -1,0 +1,39 @@
+{
+  "variables": {
+    "arch": "",
+    "distro": "",
+    "url": ""
+  },
+  "builders": [
+  {
+    "type": "docker",
+    "image": "ubuntu:xenial",
+    "commit": true,
+    "changes": [
+      "VOLUME /tmp",
+      "EXPOSE 22",
+      "CMD [\"start.sh\"]",
+      "ENTRYPOINT [\"run.sh\"]"
+    ]
+  }],
+  "provisioners":[
+  {
+    "type": "shell",
+    "script": "configure.sh",
+    "environment_vars":[
+      "arch={{user `arch`}}",
+      "distro={{user `distro`}}",
+      "url={{user `url`}}"
+    ]
+  },
+  {
+    "type": "file",
+    "source": "start.sh",
+    "destination": "/start.sh"
+  },
+  {
+    "type": "file",
+    "source": "run.sh",
+    "destination": "/run.sh"
+  }]
+}
